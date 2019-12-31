@@ -16,12 +16,9 @@ parser = (req, res, next) => {
     const nativeData = xlsx2json.parse(xlsxPath);
     if(nativeData === undefined)
         handleError(res);
-
     const jsonData = nativeData[0];
-
     if (jsonData === undefined)
         handleError(res);
-
     else {
         res.status(200);
         res.json({status: 1, data: jsonData.data});
