@@ -21,6 +21,9 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 app.post('/parse/xlsx', upload.single('file'),parser);
+app.all('*',(req,res)=>{
+    res.status(404).send('page not found')
+});
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
