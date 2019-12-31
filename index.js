@@ -21,5 +21,8 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 app.post('/parse/xlsx', upload.single('file'),parser);
-
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));
