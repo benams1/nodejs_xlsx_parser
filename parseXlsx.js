@@ -17,8 +17,10 @@ const unlinkFile = (path) => {
 
 
 parser = (req, res, next) => {
+    console.log('parseXlsx.parser request received at: ',Date.now());
     const {file} = req;
     if (!file) {
+        console.log('parseXlsx.parses file is undefined');
         return handleError(res, 'missing file')
     }
     const xlsxPath = path.join('./uploads/'+file.filename);
@@ -27,15 +29,18 @@ parser = (req, res, next) => {
         nativeData = xlsx2json.parse(xlsxPath);
     }
     catch(err){
+        console.error(err.stack);
         unlinkFile(xlsxPath);
         return handleError(res,'file extension error');
     }
     const jsonData = nativeData[0];
     if (!jsonData){
+        console.log('parseXlsx.parser file structure error');
         unlinkFile(xlsxPath);
         return handleError(res,'empty sheets');
     }
     else {
+        console.log('parseXlsx.parser file parsed successfully');
         res.status(200);
         res.json({status: 1, data: jsonData.data});
     }
